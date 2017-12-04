@@ -1,0 +1,12 @@
+# your pinboard.in credentials:
+username=
+password=
+
+# is you are behind a proxy, define it as "proxy=<hostname>:<port>" otherwise leave it empty:
+proxy=
+
+# cache directory (without the final /)
+cache=.cache
+
+# cache Time-To-Live in seconds. After this duration, the cached entry will be refreshed.
+cache_ttl=60
