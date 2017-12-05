@@ -12,12 +12,13 @@ class App extends Component {
             error: null,
             isLoaded: false,
             items: [],
-            allTags: {},           // associative array {tags: count}
-            selectedTags: []       // array of strings
+            tags: {}                // associative array {tags: {count, selected}}
+            // allTags: {},           // associative array {tags: count}
+            // selectedTags: []       // array of strings
         };
     }
 
-    updateState(data) {
+    updateState(items) {
     /*
      {
          "_api_instance_hash": "58a89c01",
@@ -36,34 +37,30 @@ class App extends Component {
          "meta": "5d691ad2a37258f8d80526878823d48a"
      },
     */
-        let allTags = {};
-        for (let i=0; i<data.length; i++) {
-            for (let k=0; k<data[i].tags.length; k++) {
-                let t = data[i].tags[k];
-                if (allTags.hasOwnProperty(t)) {
-                    allTags[t]++;
+        // make a temp copy of the selected tags
+        let selTags = [];
+        for (const [tag, props] of Object.entries(this.state.tags)) {
+            if (props.selected) {
+                selTags.push(tag);
+            }
+        }
+
+        let tags = {};
+        for (let i=0; i<items.length; i++) {
+            for (let k=0; k<items[i].tags.length; k++) {
+                let t = items[i].tags[k];
+                if (tags.hasOwnProperty(t)) {
+                    tags[t].count++;
                 } else {
-                    allTags[t] = 1;
+                    tags[t] = {count: 1, selected: selTags.includes(t)};
                 }
             }
         }
-        console.log(allTags);
-
-        // filter selectedTags
-        let selTags = [];
-        for (let i=0; i < this.state.selectedTags.length; i++) {
-            let t = this.state.selectedTags[i];
-            if (allTags.hasOwnProperty(t)) {
-                selTags.push(t)
-            }
-        }
-        console.log(selTags);
 
         this.setState({
             isLoaded: true,
-            items: data,
-            allTags: allTags,
-            selectedTags: selTags
+            items,
+            tags
         });
     }
 
@@ -92,22 +89,16 @@ class App extends Component {
         )
     }
 
-    // changeTagState(event) {
-    //     this.setState({btnNewScreen: !this.state.btnNewScreen})
-    // }
-
     handleTagClick = (t) => {
-        console.log('handleTagClick', t);
-        let selected = this.state.selectedTags;
-        if (selected.includes(t)) {
-            // selected.
-        } else {
-
+        let tags = {...this.state.tags};
+        if (tags.hasOwnProperty(t)) {
+            tags[t].selected = !tags[t].selected;
         }
+        this.setState({tags});
     }
 
     render() {
-        const { error, isLoaded, items, allTags, selectedTags } = this.state;
+        const { error, isLoaded, items, tags } = this.state;
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
@@ -116,7 +107,7 @@ class App extends Component {
             //console.log('items', items);
             return (
                 <div>
-                    <Tags all={allTags} selected={selectedTags} handleClick={this.handleTagClick} />
+                    <Tags tags={tags} handleClick={this.handleTagClick} />
                     <Bookmarks bookmarks={items} />
                 </div>
             );
