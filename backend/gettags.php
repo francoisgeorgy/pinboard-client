@@ -18,8 +18,10 @@
 
     if (!$force_refresh) {
         if (file_exists($cache_file)) {
-            $tags = unserialize(file_get_contents($cache_file));
             $refresh_cache = time() > (filemtime($cache_file) + intval($conf['cache_ttl']));
+            if (!$refresh_cache) {
+                $tags = unserialize(file_get_contents($cache_file));
+            }
         }
     }
 
