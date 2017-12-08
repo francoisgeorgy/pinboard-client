@@ -16,7 +16,14 @@
 
     $force_refresh = isset($_GET['refresh']) ? $_GET['refresh'] == '1' : false;
 
-    $cache_entry = empty($tags) ? '_' : preg_replace("/[^A-Za-z0-9_]/", '', trim(implode('_', $tags)));
+    if (empty($tags)) {
+        $cache_entry = '_';
+    } else {
+        sort($tags);
+        $cache_entry = preg_replace("/[^A-Za-z0-9_]/", '', trim(implode('_', $tags)));
+    }
+
+    //$cache_entry = empty($tags) ? '_' : preg_replace("/[^A-Za-z0-9_]/", '', trim(implode('_', $tags)));
     $cache_file = $conf['cache'].'/'.$cache_entry;
 
     $refresh_cache = false;
@@ -32,6 +39,13 @@
     if (empty($pins) || $refresh_cache) {
         $pinboard = new PinboardAPI($conf['username'], $conf['password'], 10, 30, $conf['proxy']);
         $pins = $pinboard->get_all($limit, null, $tags);
+
+        // sort by title
+        function cmp($a, $b) {
+            return strcmp(strtolower($a->title), strtolower($b->title));
+        }
+        usort($pins, "cmp");
+
         file_put_contents($cache_file, serialize($pins));
     }
 

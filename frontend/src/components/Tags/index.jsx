@@ -1,17 +1,38 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 
 class Tags extends Component {
 
     componentDidMount() {
     }
 
+    cssForCount(count) {
+        if (count < 5) {
+            return 'c5';
+        } else if (count < 10) {
+            return 'c10';
+        } else if (count < 20) {
+            return 'c20';
+        } else if (count < 50) {
+            return 'c50';
+        } else if (count < 100) {
+            return 'c100';
+        } else {
+            return 'cMax';
+        }
+    }
+
     render() {
         return (
-            <div class="tags">
+            <div className="tags">
                 {
-                    Object.keys(this.props.tags).map(key => {
+                    Object.keys(this.props.tags).sort().map(key => {
                         let p = this.props.tags[key];
-                        return <span className={p.selected ? 'on' : ''} onClick={() => this.props.handleClick(key)} key={key}>{key}:{p.count}</span>
+                        let css = classnames({
+                            'on': p.selected,
+                            [`${this.cssForCount(p.count)}`]: true
+                        });
+                        return <span className={css} onClick={() => this.props.handleClick(key)} key={key} title={p.count}>{key}</span>
                     })
                 }
             </div>

@@ -2,12 +2,13 @@
 
     header('Content-type: application/json');
     header('Cache-Control: no-cache');
+    header('Access-Control-Allow-Origin: *');   //TODO: restrict access to front-end only
 
     include 'lib/pinboard-api.php';
 
     $conf = parse_ini_file("conf.ini");
 
-    $force_refresh = $_GET["refresh"] == '1';
+    $force_refresh = isset($_GET['refresh']) ? $_GET['refresh'] == '1' : false;
 
     $cache_entry = '_all-tags';
     $cache_file = $conf['cache'].'/'.$cache_entry;

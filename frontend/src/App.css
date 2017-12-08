@@ -1,3 +1,12 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
 .App {
   text-align: center;
 }
@@ -27,10 +36,33 @@
   to { transform: rotate(360deg); }
 }
 
+div.tags {
+    background-color: #eeeeee;
+    border-bottom: 1px solid #aaa;
+}
+
+div.tags, div.bookmarks {
+    margin: 0;
+    padding: 10px 20px;
+}
+
 .tags span {
   margin-right: 1rem;
+    /*word-break: keep-all;*/
+    padding: 0 0.4rem;
 }
 
 .tags span.on {
-  background-color: darkgoldenrod;
+  background-color: gold;
+}
+
+.c5   { font-size: 0.75rem; }
+.c10  { font-size: 1rem; }
+.c20  { font-size: 1.3rem; }
+.c50  { font-size: 1.7rem; }
+.c100 { font-size: 2.0rem; }
+.cMax { font-size: 2.3rem; }
+
+div.bookmarks {
+    line-height: 1.4rem;
 }

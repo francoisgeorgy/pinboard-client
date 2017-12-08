@@ -7,6 +7,19 @@ class Bookmarks extends Component {
 
     render() {
         return (
+            <div className={"bookmarks"}>
+                {
+                    this.props.bookmarks.map(item => (
+                        <div key={item.hash}><a href={item.url} target="_blank">{item.title}</a></div>
+                    ))
+                }
+            </div>
+        );
+    }
+
+    /*
+    render() {
+        return (
             <ul>
                 {
                     this.props.bookmarks.map(item => (
@@ -16,6 +29,7 @@ class Bookmarks extends Component {
             </ul>
         );
     }
+    */
 }
 
 export default Bookmarks;
