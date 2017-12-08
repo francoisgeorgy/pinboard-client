@@ -50,6 +50,7 @@ div.tags, div.bookmarks {
   margin-right: 1rem;
     /*word-break: keep-all;*/
     padding: 0 0.4rem;
+    cursor: pointer;
 }
 
 .tags span.on {
@@ -60,8 +61,8 @@ div.tags, div.bookmarks {
 .c10  { font-size: 1rem; }
 .c20  { font-size: 1.3rem; }
 .c50  { font-size: 1.7rem; }
-.c100 { font-size: 2.0rem; }
-.cMax { font-size: 2.3rem; }
+.c100 { font-size: 1.95rem; }
+.cMax { font-size: 2.2rem; }
 
 div.bookmarks {
     line-height: 1.4rem;
