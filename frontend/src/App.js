@@ -32,6 +32,7 @@ import Bookmarks from "./components/Bookmarks/index";
 
 class App extends Component {
 
+
     constructor(props) {
         super(props);
         this.state = {
@@ -42,6 +43,8 @@ class App extends Component {
             // allTags: {},           // associative array {tags: count}
             // selectedTags: []       // array of strings
         };
+        this.BE = 'https://www.fgeorgy.ch/private/pinboard';
+        //const BE = 'http://localhost/pri/dev/projets/pinboard-client/backend';
     }
 
     /*
@@ -138,7 +141,7 @@ class App extends Component {
 
         let qs = selTags.length > 0 ? `?tags=${selTags.join()}` : '';
 
-        fetch(`http://localhost/pri/dev/projets/pinboard-client/backend/getbookmarks.php${qs}`, {
+        fetch(`${this.BE}/getbookmarks.php${qs}`, {
             mode: 'cors'
         }).then(function(response) {
             if (response.status !== 200) {
@@ -164,7 +167,7 @@ class App extends Component {
     }
 
     fetchAllTags() {
-        fetch("http://localhost/pri/dev/projets/pinboard-client/backend/gettags.php", {
+        fetch(`${this.BE}/gettags.php`, {
             mode: 'cors'
         }).then(function(response) {
             if (response.status !== 200) {
