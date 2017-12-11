@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import {Link} from "react-router-dom";
 
 class Tags extends Component {
 
-    componentDidMount() {
-    }
-
-    cssForCount(count) {
+    static cssForCount(count) {
         if (count < 5) {
             return 'c5';
         } else if (count < 10) {
@@ -22,7 +20,12 @@ class Tags extends Component {
         }
     }
 
+    constructor(props) {
+        super(props);
+    }
+
     render() {
+        console.log('Tags.render', this.props);
         return (
             <div className="tags">
                 {
@@ -30,13 +33,35 @@ class Tags extends Component {
                         let p = this.props.tags[key];
                         let css = classnames({
                             'on': p.selected,
-                            [`${this.cssForCount(p.count)}`]: true
+                            [`${Tags.cssForCount(p.count)}`]: true
                         });
-                        return <span className={css} onClick={() => this.props.handleClick(key)} key={key} title={p.count}>{key}</span>
+                        // return <span className={css} key={key} title={p.count}>{key}?{q}</span>
+                        return (
+                            <span className={css} key={key} title={p.count}>
+                                <Link to={`${this.props.base}/${key}`}>{key}</Link>
+                            </span>
+                        );
                     })
                 }
             </div>
         );
+
+        /*
+                return (
+                    <div className="tags">
+                        {
+                            Object.keys(this.props.tags).sort().map(key => {
+                                let p = this.props.tags[key];
+                                let css = classnames({
+                                    'on': p.selected,
+                                    [`${this.cssForCount(p.count)}`]: true
+                                });
+                                return <span className={css} onClick={() => this.props.handleClick(key)} key={key} title={p.count}>{key}</span>
+                            })
+                        }
+                    </div>
+                );
+        */
     }
 /*
     Object.keys(this.props.tags).map(key => {

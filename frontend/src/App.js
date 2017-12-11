@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import './App.css';
-import Tags from "./components/Tags/index";
-import Bookmarks from "./components/Bookmarks/index";
+// import Tags from "./components/Tags/index";
+// import Bookmarks from "./components/Bookmarks/index";
+import Results from "./components/Results";
+import {Link, Route, Switch} from "react-router-dom";
 
 /*
  {
@@ -28,6 +30,12 @@ import Bookmarks from "./components/Bookmarks/index";
  ]
 
 */
+
+const Home = () => (
+    <div>
+        <h1>Home</h1>
+    </div>
+)
 
 
 class App extends Component {
@@ -73,7 +81,7 @@ class App extends Component {
         });
     }
     */
-
+/*
     setTags(items) {
         let tags = {};
         for (let i=0; i<items.length; i++) {
@@ -85,10 +93,6 @@ class App extends Component {
         });
     }
 
-    /**
-     * Update tags from current set of bookmarks
-     * @param items
-     */
     updateTags(bookmarks) {
 
         // make a temp copy of the selected tags
@@ -201,21 +205,36 @@ class App extends Component {
             this.fetchBookmarks();
         });
     }
-
+*/
     render() {
+        /*
         const { error, tagsLoaded, items, tags } = this.state;
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!tagsLoaded) {
             return <div>Loading tags...</div>;
         } else {
+        */
+            return (
+                <div>
+                    <Link to='/all'>all</Link>
+                    <Switch>
+                        <Route exact path='/' component={Home}/>
+                        <Route path='/:tag' component={Results}/>
+                    </Switch>
+                </div>
+            );
+            /*
             return (
                 <div>
                     <Tags tags={tags} handleClick={this.handleTagClick} />
                     <Bookmarks bookmarks={items} />
                 </div>
             );
+            */
+        /*
         }
+        */
     }
 
 }
