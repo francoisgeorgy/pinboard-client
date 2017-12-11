@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import './App.css';
-import Tags from "./components/Tags/index";
-import Bookmarks from "./components/Bookmarks/index";
+// import Tags from "./components/Tags/index";
+// import Bookmarks from "./components/Bookmarks/index";
+import {Route, Switch} from "react-router-dom";
+import Results from "./components/Results";
 
 /*
  {
@@ -29,6 +31,27 @@ import Bookmarks from "./components/Bookmarks/index";
 
 */
 
+
+// const Home = () => (
+//     <div>
+//         <h1>Home</h1>
+//     </div>
+// );
+
+// //bookmarks={items}
+// const TheBookmarks = (props) => {
+//     return (
+//         <Bookmarks {...props} />
+//     );
+// }
+
+/*
+const ResultsWrapper = (props) => {
+    return (
+        <Results tags={tags} bookmarks={items} handleClick={this.handleTagClick} match={{ params: { id: 0 }, url: '' }} />
+    );
+}
+*/
 
 class App extends Component {
 
@@ -199,8 +222,9 @@ class App extends Component {
         }
         this.setState({tags}, () => {
             this.fetchBookmarks();
+            // history.push('');
         });
-    }
+    };
 
     render() {
         const { error, tagsLoaded, items, tags } = this.state;
@@ -211,8 +235,21 @@ class App extends Component {
         } else {
             return (
                 <div>
-                    <Tags tags={tags} handleClick={this.handleTagClick} />
-                    <Bookmarks bookmarks={items} />
+                    {/*<Tags tags={tags} handleClick={this.handleTagClick} />*/}
+                    {/*<Tags tags={tags} handleClick={this.handleTagClick} match={{ params: { id: 0 }, url: '' }} />*/}
+                    {/*<Switch>*/}
+                        {/*<Route exact path='/' component={Home}/>*/}
+                        {/*/!*<Route path='/:tags' render={<TheBookmarks />}/>*!/*/}
+                        {/*<Route path="/:tags" render={()=><Bookmarks bookmarks={items} />}/>*/}
+                    {/*</Switch>*/}
+
+                    {/*<Route path={`${this.props.match.url}/:id`} component={Tags}/>*/}
+
+                    <Route path={`${this.props.match.url}/:id`} render={(routeProps) => (<Results {...routeProps} {...props} />)} tags={tags} bookmarks={items} />
+
+
+                    {/*<Results tags={tags} bookmarks={items} handleClick={this.handleTagClick} match={{ params: { id: 0 }, url: '' }} />*/}
+
                 </div>
             );
         }

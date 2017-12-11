@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import {Link, Route} from "react-router-dom";
 
 class Tags extends Component {
 
@@ -32,7 +33,14 @@ class Tags extends Component {
                             'on': p.selected,
                             [`${this.cssForCount(p.count)}`]: true
                         });
-                        return <span className={css} onClick={() => this.props.handleClick(key)} key={key} title={p.count}>{key}</span>
+                        //return <span className={css} onClick={() => this.props.handleClick(key)} key={key} title={p.count}>{key}</span>
+
+                        return (
+                            <Link to={`${this.props.match.url}/${key}`}>
+                                <span className={css}>{key}</span>
+                            </Link>
+                        )
+
                     })
                 }
             </div>
