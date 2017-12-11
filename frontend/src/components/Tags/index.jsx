@@ -20,25 +20,52 @@ class Tags extends Component {
         }
     }
 
-    constructor(props) {
-        super(props);
-    }
-
     render() {
-        console.log('Tags.render', this.props);
+        console.log('Tags.render', this.props.tagsParam, this.props);
+        let base = this.props.base;
         return (
             <div className="tags">
                 {
-                    Object.keys(this.props.tags).sort().map(key => {
-                        let p = this.props.tags[key];
+                    Object.keys(this.props.tags).sort().map(tag => {
+
+                        let p = this.props.tags[tag];
                         let css = classnames({
                             'on': p.selected,
                             [`${Tags.cssForCount(p.count)}`]: true
                         });
-                        // return <span className={css} key={key} title={p.count}>{key}?{q}</span>
+
+                        // si tag courant est déjà dans l'URL alors on l'enlève:
+                        let uri;
+                        if (base.indexOf(tag) >= 0) {
+
+                            uri = base;
+
+                            if (uri === `/${tag}`) {
+                                uri = '/';
+                            } else {
+
+                                if (uri.startsWith(`/${tag},`)) {
+                                    uri = uri.replace(`/${tag},`, '/');
+                                }
+
+                                if (uri.endsWith(`,${tag}`)) {
+                                    uri = uri + ',';    // add a comma so it will be handled by the next replace
+                                }
+                                uri = uri.replace(`,${tag},`, ',');
+
+                                if (uri.endsWith(',')) {
+                                    uri = uri.substring(0, uri.length - 1);
+                                }
+
+                            }
+
+                        } else {
+                            uri = base.length > 0 ? (base + ',' + tag) : tag;
+                        }
+
                         return (
-                            <span className={css} key={key} title={p.count}>
-                                <Link to={`${this.props.base}/${key}`}>{key}</Link>
+                            <span className={css} key={tag} title={p.count}>
+                                <Link to={`${uri}`}>{tag}</Link>
                             </span>
                         );
                     })
@@ -46,29 +73,8 @@ class Tags extends Component {
             </div>
         );
 
-        /*
-                return (
-                    <div className="tags">
-                        {
-                            Object.keys(this.props.tags).sort().map(key => {
-                                let p = this.props.tags[key];
-                                let css = classnames({
-                                    'on': p.selected,
-                                    [`${this.cssForCount(p.count)}`]: true
-                                });
-                                return <span className={css} onClick={() => this.props.handleClick(key)} key={key} title={p.count}>{key}</span>
-                            })
-                        }
-                    </div>
-                );
-        */
     }
-/*
-    Object.keys(this.props.tags).map(key => {
-        let count = this.props.tags[key];
-        return <span className={this.props.selected.includes(key) ? 'on' : ''} onClick={() => this.props.handleClick(key)} key={key}>{key}:{count}</span>
-    })
-*/
+
 }
 
 export default Tags;
