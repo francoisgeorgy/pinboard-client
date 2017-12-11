@@ -1,7 +1,11 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import './App.css';
 import Tags from "./components/Tags/index";
 import Bookmarks from "./components/Bookmarks/index";
+
+import { addUrlProps, UrlQueryParamTypes } from 'react-url-query';
+
 
 /*
  {
@@ -30,7 +34,36 @@ import Bookmarks from "./components/Bookmarks/index";
 */
 
 
+/**
+ * Specify how the URL gets decoded here. This is an object that takes the prop
+ * name as a key, and a query param specifier as the value. The query param
+ * specifier can have a `type`, indicating how to decode the value from the
+ * URL, and a `queryParam` field that indicates which key in the query
+ * parameters should be read (this defaults to the prop name if not provided).
+ */
+const urlPropsQueryConfig = {
+    bar: {type: UrlQueryParamTypes.string},
+    foo: {type: UrlQueryParamTypes.number, queryParam: 'fooInUrl'},
+};
+
+
 class App extends Component {
+
+    static propTypes = {
+        bar: PropTypes.string,
+        foo: PropTypes.number,
+        // change handlers are automatically generated and passed if a config is provided
+        // and `addChangeHandlers` isn't false. They use `replaceIn` by default, just
+        // updating that single query parameter and keeping the other existing ones.
+        onChangeFoo: PropTypes.func,
+        onChangeBar: PropTypes.func,
+        onChangeUrlQueryParams: PropTypes.func,
+    }
+
+    static defaultProps = {
+        foo: 123,
+        bar: 'bar',
+    }
 
     constructor(props) {
         super(props);
@@ -200,6 +233,10 @@ class App extends Component {
         this.setState({tags}, () => {
             this.fetchBookmarks();
         });
+
+
+        this.onChangeFoo(Math.round(Math.random() * 1000))
+
     }
 
     render() {
@@ -211,6 +248,7 @@ class App extends Component {
         } else {
             return (
                 <div>
+                    <div>foo={this.props.foo} - bar={this.props.bar}</div>
                     <Tags tags={tags} handleClick={this.handleTagClick} />
                     <Bookmarks bookmarks={items} />
                 </div>
@@ -220,4 +258,12 @@ class App extends Component {
 
 }
 
-export default App;
+
+/**
+ * We use the addUrlProps higher-order component to map URL query parameters
+ * to props for MainPage. In this case the mapping happens automatically by
+ * first decoding the URL query parameters based on the urlPropsQueryConfig.
+ */
+export default addUrlProps({urlPropsQueryConfig})(App);
+
+// export default App;
