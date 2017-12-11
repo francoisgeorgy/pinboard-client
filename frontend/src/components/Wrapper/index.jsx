@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import Bookmarks from "../Bookmarks";
 import Tags from "../Tags";
 
+// const BACK_END = 'https://www.fgeorgy.ch/private/pinboard';
+//const BACK_END = 'http://localhost/pri/dev/projets/pinboard-client/backend';
+
 class Wrapper extends Component {
 
     constructor(props) {
@@ -82,7 +85,7 @@ class Wrapper extends Component {
         });
 */
 
-        fetch(`http://localhost/pri/dev/projets/pinboard-client/backend/getbookmarks.php${qs}`, {
+        fetch(`${process.env.REACT_APP_BACKEND}/getbookmarks.php${qs}`, {
             mode: 'cors'
         }).then(function(response) {
 
@@ -113,8 +116,8 @@ class Wrapper extends Component {
     }
 
     fetchAllTags() {
-        console.log('Wrapper.fetchAllTags');
-        fetch("http://localhost/pri/dev/projets/pinboard-client/backend/gettags.php", {
+        console.log('Wrapper.fetchAllTags', process.env.REACT_APP_BACKEND);
+        fetch(`${process.env.REACT_APP_BACKEND}/gettags.php`, {
             mode: 'cors'
         }).then(function(response) {
             console.log('Wrapper.fetchAllTags response received');
