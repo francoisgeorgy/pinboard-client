@@ -52,6 +52,7 @@ class Wrapper extends Component {
         let newTags = this.updateTags(items);
         this.setState({
             tags: newTags,
+            tagsLoaded: true,
             itemsLoaded: true,
             items,
             loading: false
@@ -159,7 +160,9 @@ class Wrapper extends Component {
 
     componentDidMount() {
         console.log('Wrapper.componentDidMount', this.props.match.params.tags);
-        this.fetchAllTags();
+        // this.fetchAllTags();
+        const newTagsList = (this.props.match.params && this.props.match.params.hasOwnProperty('tags')) ? this.props.match.params.tags : 'all';
+        this.fetch(newTagsList);
     }
 
     componentWillReceiveProps(nextProps) {
