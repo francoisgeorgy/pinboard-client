@@ -26,6 +26,12 @@ class Tags extends Component {
         return (
             <div className="tags">
                 {
+                    (base.length > 0) &&
+                    <span className="c10 all">
+                        <Link to='/'>ALL</Link>
+                    </span>
+                }
+                {
                     Object.keys(this.props.tags).sort().map(tag => {
 
                         let p = this.props.tags[tag];

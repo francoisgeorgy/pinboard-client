@@ -15,44 +15,53 @@ div.tags {
 
 div.tags, div.bookmarks {
     margin: 0;
-    padding: 10px 20px;
+    padding: 5px;
 }
 
-/*
-.tags span {
-  margin-right: 1rem;
-    padding: 0 0.4rem;
+div.bookmarks > div {
+    padding: 0 5px;
 }
-
-.tags span.on {
-  background-color: gold;
-}
-*/
 
 .tags a {
-    margin-right: 1rem;
-    padding: 0 0.4rem;
     color: #333;
 }
 
-.tags a.on {
-    background-color: gold;
+.bookmarks > div:hover {
+    background-color: #EBE5FB;
 }
 
-.c5   { font-size: 0.75rem; }
-.c10  { font-size: 1rem; }
-.c20  { font-size: 1.3rem; }
-.c50  { font-size: 1.7rem; }
-.c100 { font-size: 2.0rem; }
-.cMax { font-size: 2.3rem; }
+.tags .on {
+    background-color: #FFFF8F;
+}
 
-.c5   { font-size: 0.75rem; }
-.c10  { font-size: 1rem; }
-.c20  { font-size: 1.3rem; }
-.c50  { font-size: 1.7rem; }
-.c100 { font-size: 2.0rem; }
-.cMax { font-size: 2.3rem; }
+.tags span:hover {
+    background-color: #fff;
+}
+
+.c5   { font-size: 0.75rem; margin: 0 0.1rem; padding: 0 0.1rem; }
+.c10  { font-size: 1rem; margin: 0 0.1rem; padding: 0 0.1rem; }
+.c20  { font-size: 1.3rem; margin: 0 0.1rem; padding: 0 0.3rem; }
+.c50  { font-size: 1.6rem; margin: 0 0.1rem; padding: 0 0.3rem; }
+.c100 { font-size: 1.84rem; margin: 0 0.1rem; padding: 0 0.3rem; }
+.cMax { font-size: 2rem; margin: 0 0.1rem; padding: 0 0.3rem; }
+
+.all   { font-weight: bold }
+
 
 div.bookmarks {
     line-height: 1.4rem;
+}
+
+.message {
+    padding: 10px;
+    border-bottom: 1px solid #999;
+    color: #555;
+}
+
+.message.info {
+    background-color: #CEF9CE;
+}
+
+.message.error {
+    background-color: #FF6058;
 }

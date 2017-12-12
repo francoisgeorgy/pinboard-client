@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import Bookmarks from "../Bookmarks";
 import Tags from "../Tags";
-
-// const BACK_END = 'https://www.fgeorgy.ch/private/pinboard';
-//const BACK_END = 'http://localhost/pri/dev/projets/pinboard-client/backend';
+import Message from "../Message";
 
 class Wrapper extends Component {
 
@@ -17,6 +15,11 @@ class Wrapper extends Component {
             items: [],
             loading: true
         };
+        this.selectedTags = [];
+    }
+
+    updateSelectedTags(tagsParam) {
+        this.selectedTags = tagsParam.replace('/', '').split(',');
     }
 
     getTags(items) {
@@ -29,13 +32,6 @@ class Wrapper extends Component {
 
     updateTags(bookmarks) {
         console.log('Wrapper.updateTags');
-        // make a temp copy of the selected tags
-        let selTags = [];
-        for (const [tag, props] of Object.entries(this.state.tags)) {
-            if (props.selected) {
-                selTags.push(tag);
-            }
-        }
         let tags = {};
         for (let i=0; i<bookmarks.length; i++) {
             for (let k=0; k<bookmarks[i].tags.length; k++) {
@@ -43,7 +39,8 @@ class Wrapper extends Component {
                 if (tags.hasOwnProperty(t)) {
                     tags[t].count++;
                 } else {
-                    tags[t] = {count: 1, selected: selTags.includes(t)};
+                    // tags[t] = {count: 1, selected: selTags.includes(t)};
+                    tags[t] = {count: 1, selected: this.selectedTags.includes(t)};
                 }
             }
         }
@@ -62,28 +59,17 @@ class Wrapper extends Component {
         });
     }
 
-    fetchBookmarks(tags) {
+    fetchBookmarks(/*tags*/) {
 
         //console.log('Wrapper.fetchBookmarks');
 
-        // let selTags = [];
-        //
-        // for (const [tag, props] of Object.entries(this.state.tags)) {
-        //     if (props.selected) {
-        //         selTags.push(tag);
-        //     }
-        // }
-        //
-        // let qs = selTags.length > 0 ? `?tags=${selTags.join()}` : '';
-        let qs = tags.length > 0 ? `?tags=${tags}` : '';
+        let qs = this.selectedTags.length > 0 ? `?tags=${this.selectedTags}` : '';
 
         console.log(`Wrapper.fetchBookmarks qs=${qs}`);
 
-/*
         this.setState({
             loading: true
         });
-*/
 
         fetch(`${process.env.REACT_APP_BACKEND}/getbookmarks.php${qs}`, {
             mode: 'cors'
@@ -150,28 +136,26 @@ class Wrapper extends Component {
         )
     }
 
-    fetch(tags) {
-        console.log(`fetch ${tags}`);
-        //if (this.props.match.params.tags === 'all') {
-        if (tags === 'all') {
+    fetch() {
+        console.log(`fetch ${this.selectedTags}`);
+        if (this.selectedTags.length === 0 /*tags === 'all'*/) {
             this.fetchAllTags();
         } else {
             console.log('fetch bookmarks and extract tags');
-            this.fetchBookmarks(tags);
+            this.fetchBookmarks(/*tags*/);
         }
     }
 
     componentDidMount() {
         console.log('Wrapper.componentDidMount', this.props.match.params.tags);
-        // this.fetchAllTags();
-        const newTagsList = (this.props.match.params && this.props.match.params.hasOwnProperty('tags')) ? this.props.match.params.tags : 'all';
-        this.fetch(newTagsList);
+        this.updateSelectedTags((this.props.match.params && this.props.match.params.hasOwnProperty('tags')) ? this.props.match.params.tags : '');
+        this.fetch();
     }
 
     componentWillReceiveProps(nextProps) {
         console.log('Wrapper.componentWillReceiveProps', nextProps);
-        const newTagsList = (nextProps.match.params && nextProps.match.params.hasOwnProperty('tags')) ? nextProps.match.params.tags : 'all';
-        this.fetch(newTagsList);
+        this.updateSelectedTags((nextProps.match.params && nextProps.match.params.hasOwnProperty('tags')) ? nextProps.match.params.tags : '');
+        this.fetch();
     }
 
     render() {
@@ -181,7 +165,7 @@ class Wrapper extends Component {
         const base = tagsList === 'all' ? '' : `${m.url}`;   // url=/guitar/javascript, base=/guitar/javascript
         console.log(`Wrapper.render: url=${m.url} base=${base} tagsList=${tagsList}`);
 
-        const { error, tagsLoaded, /*itemsLoaded,*/ items, tags } = this.state;
+        const { error, tagsLoaded, /*itemsLoaded,*/ items, tags, loading } = this.state;
 
         if (error) {
             console.log(`Wrapper.render: ERROR`);
@@ -197,6 +181,9 @@ class Wrapper extends Component {
         return (
             <div>
                 <Tags tags={tags} base={base} tagsParam={m.url} />
+                {loading &&
+                    <Message message={"Please wait, retrieving bookmarks"} type={"info"} />
+                }
                 <Bookmarks bookmarks={items} />
             </div>
         );
