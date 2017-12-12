@@ -22,8 +22,6 @@
         sort($tags);
         $cache_entry = preg_replace("/[^A-Za-z0-9_]/", '', trim(implode('_', $tags)));
     }
-
-    //$cache_entry = empty($tags) ? '_' : preg_replace("/[^A-Za-z0-9_]/", '', trim(implode('_', $tags)));
     $cache_file = $conf['cache'].'/'.$cache_entry;
 
     $refresh_cache = false;
@@ -43,21 +41,12 @@
         $pins = $pinboard->get_all($limit, null, $tags);
 
         // sort by title
-        function cmp($a, $b) {
+        usort($pins, function ($a, $b) {
             return strcmp(strtolower($a->title), strtolower($b->title));
-        }
-        usort($pins, "cmp");
+        });
 
         file_put_contents($cache_file, serialize($pins));
     }
 
     print(json_encode($pins));
-
-/*
-    foreach ($pins as $pin) {
-        //echo "{$pin->title} [{$pin->url}]<br />";
-        $t = print_r($pin->tags, true);
-        echo "{$pin->title} [{$t}]<br />";
-    }
-*/
 
