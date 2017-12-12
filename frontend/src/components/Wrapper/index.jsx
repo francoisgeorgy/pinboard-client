@@ -19,7 +19,8 @@ class Wrapper extends Component {
     }
 
     updateSelectedTags(tagsParam) {
-        this.selectedTags = tagsParam.replace('/', '').split(',');
+        console.log('updateSelectedTags', tagsParam);
+        this.selectedTags = tagsParam.length === 0 ? [] : tagsParam.replace('/', '').split(',');
     }
 
     getTags(items) {
@@ -159,6 +160,8 @@ class Wrapper extends Component {
     }
 
     render() {
+
+        //TODO: add a full-text quick filter to filter the currently displayed tags or bookmarks
 
         const m = this.props.match;
         const tagsList = this.props.match.params.tags || 'all';

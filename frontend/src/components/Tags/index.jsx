@@ -9,11 +9,11 @@ class Tags extends Component {
             return 'c5';
         } else if (count < 10) {
             return 'c10';
-        } else if (count < 20) {
+        } else if (count < 40) {
             return 'c20';
-        } else if (count < 50) {
+        } else if (count < 80) {
             return 'c50';
-        } else if (count < 100) {
+        } else if (count < 200) {
             return 'c100';
         } else {
             return 'cMax';

@@ -12,7 +12,7 @@
     $tags = empty($t) ? null : explode(',', $t);
 
     $limit = isset($_GET['limit']) ? $_GET['limit'] : null;
-    if (!is_numeric($limit)) $limit = empty($tags) ? 100 : 1000;
+    if (!is_numeric($limit)) $limit = empty($tags) ? 1000 : 1000;
 
     $force_refresh = isset($_GET['refresh']) ? $_GET['refresh'] == '1' : false;
 
