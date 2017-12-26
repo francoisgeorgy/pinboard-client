@@ -28,7 +28,12 @@ class Bookmarks extends Component {
 
             return (
                 <div>
-                    <SearchInput className="search-input" placeholder="filter" onChange={this.searchUpdated} />
+                    <div>
+                        <div className={"refresh-link"}>
+                            <button onClick={this.props.handleRefresh}>force refresh</button>
+                        </div>
+                        <SearchInput className="search-input" placeholder="filter" onChange={this.searchUpdated} />
+                    </div>
                     <div className={"bookmarks"}>
                         {
                             filtered.map(item => (

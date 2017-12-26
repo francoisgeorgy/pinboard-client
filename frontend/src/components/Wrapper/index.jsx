@@ -16,6 +16,7 @@ class Wrapper extends Component {
             loading: true
         };
         this.selectedTags = [];
+        this.handleRefresh = this.handleRefresh.bind(this);
     }
 
     updateSelectedTags(tagsParam) {
@@ -40,7 +41,6 @@ class Wrapper extends Component {
                 if (tags.hasOwnProperty(t)) {
                     tags[t].count++;
                 } else {
-                    // tags[t] = {count: 1, selected: selTags.includes(t)};
                     tags[t] = {count: 1, selected: this.selectedTags.includes(t)};
                 }
             }
@@ -60,13 +60,14 @@ class Wrapper extends Component {
         });
     }
 
-    fetchBookmarks(/*tags*/) {
-
-        //console.log('Wrapper.fetchBookmarks');
+    fetchBookmarks(refresh /*tags*/) {
 
         let qs = this.selectedTags.length > 0 ? `?tags=${this.selectedTags}` : '';
 
-        console.log(`Wrapper.fetchBookmarks qs=${qs}`);
+        if (refresh === true) {
+            qs += qs === '' ? '?' : '&';
+            qs += 'refresh=1';
+        }
 
         this.setState({
             loading: true
@@ -86,7 +87,6 @@ class Wrapper extends Component {
         }).then(
 
             (result) => {
-                // this.updateState(result);
                 this.setBookmarks(result);
             },
 
@@ -103,7 +103,6 @@ class Wrapper extends Component {
     }
 
     fetchAllTags() {
-        console.log('Wrapper.fetchAllTags', process.env.REACT_APP_BACKEND);
         fetch(`${process.env.REACT_APP_BACKEND}/gettags.php`, {
             mode: 'cors'
         }).then(function(response) {
@@ -115,7 +114,6 @@ class Wrapper extends Component {
             return response.json();
         }).then(
             (result) => {
-                //this.setTags(result);
                 this.setState({
                     tagsLoaded: true,
                     tags: this.getTags(result),
@@ -147,6 +145,10 @@ class Wrapper extends Component {
         }
     }
 
+    handleRefresh() {
+        this.fetchBookmarks(true);
+    }
+
     componentDidMount() {
         console.log('Wrapper.componentDidMount', this.props.match.params.tags);
         this.updateSelectedTags((this.props.match.params && this.props.match.params.hasOwnProperty('tags')) ? this.props.match.params.tags : '');
@@ -161,33 +163,26 @@ class Wrapper extends Component {
 
     render() {
 
-        //TODO: add a full-text quick filter to filter the currently displayed tags or bookmarks
-
         const m = this.props.match;
         const tagsList = this.props.match.params.tags || 'all';
-        const base = tagsList === 'all' ? '' : `${m.url}`;   // url=/guitar/javascript, base=/guitar/javascript
-        console.log(`Wrapper.render: url=${m.url} base=${base} tagsList=${tagsList}`);
-
-        const { error, tagsLoaded, /*itemsLoaded,*/ items, tags, loading } = this.state;
+        const base = tagsList === 'all' ? '' : `${m.url}`;
+        const { error, tagsLoaded, items, tags, loading } = this.state;
 
         if (error) {
-            console.log(`Wrapper.render: ERROR`);
             return <div>Error: {error.message}</div>;
         }
 
         if (!tagsLoaded) {
-            console.log(`Wrapper.render: tags not loaded`);
             return <div>Loading tags...</div>;
         }
 
-        console.log(`Wrapper.render: render results`);
         return (
             <div>
                 <Tags tags={tags} base={base} tagsParam={m.url} />
                 {loading &&
                     <Message message={"Please wait, retrieving bookmarks"} type={"info"} />
                 }
-                <Bookmarks bookmarks={items} />
+                <Bookmarks bookmarks={items} handleRefresh={this.handleRefresh} />
             </div>
         );
     }

@@ -1,3 +1,10 @@
+
+html {
+    /* html is the root element for "rem" unit */
+    font-size: 90%;
+    font-family: sans-serif;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -49,7 +56,7 @@ div.bookmarks > div {
 
 
 div.bookmarks {
-    line-height: 1.4rem;
+    line-height: 1.5rem;
 }
 
 .message {
@@ -68,11 +75,12 @@ div.bookmarks {
 
 
 .search-input {
-    position: relative;
-    padding: 0 10px;
+    /*position: relative;*/
+    padding: 1px 0 0 5px;
     border-bottom: 1px solid #aaa;
 }
 
+/*
 .search-input::before {
     content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAAXNSR0IArs4c6QAAAQJJREFUKBWVkr2uQUEUhf3ET6GRaC5aFRoJKrf1BKpb8SwqovYGXkCj00k0QnRKEYkILYobvpUYmeMMyVnJl7P3mjN7Zu9zwiGv2qRFyMMSRrAFp6JPN8XzBj+wgDkUYAg7WINTYdwpDECxrRLJHeq2accdkgm8bzTvNAg2EDOGeUYI1KNO1gkuzTA1g8T7ojbn4ONQWPuHPWgeHmnzCqoe15tkSNPgPEAn68oVcOmA2XMtGK9FoE/VhOTTVNExqLCGZnxCv2pYauEC6lF0oQxX6IOvb7yX9NPEQafan+aPXDdQC18LsO6Tip5BBY6gIQaSbnMCFRCBZRcIvFkbsvCr4AFGOCxQy+JdGQAAAABJRU5ErkJggg==');
     display: block;
@@ -83,16 +91,22 @@ div.bookmarks {
     font-size: 1rem;
     opacity: 0.6;
 }
+*/
 
 .search-input > input {
-    width: 100%;
+    max-width: 80%;
     font-size: 1rem;
     border: none;
-    padding: 4px 10px 3px 25px;
+    padding: 5px 2px;
     position: relative;
     color: #555;
 }
 
 .search-input > input:focus {
     outline: none;
+}
+
+.refresh-link {
+    float: right;
+    padding: 3px 4px 2px 4px;
 }
